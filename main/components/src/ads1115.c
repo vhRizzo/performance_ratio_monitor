@@ -216,32 +216,32 @@ void ads1115_task(void *pvParameters) {
     ads1115_set_pga(&_ads, _fsr);                // sets the fsr
     ads1115_set_mode(&_ads, _mode);              // mode
     ads1115_set_max_ticks(&_ads, 1000 / portTICK_PERIOD_MS);  // and max ticks
-    double volt = 0;     // initializes the voltage variable
-    uint16_t count = 0;  // initializes a variable to count how many increments
-                         // are being made
-    int64_t start = esp_timer_get_time();  // initializes a time control
-                                           // variable with the current time
+    double volt = 0;  // initializes the voltage variable
+    // Counter to measure average voltage
+    uint16_t count = 0;
+    /* Initializes a time control variable with the current clock time.
+     * esp_timer_get_time returns a 64 bit signed int, this should overflow only
+     * after 292271 years, so this shouldn't be a problem. */
+    int64_t start = esp_timer_get_time();
     while (1) {
-        volt += ads1115_get_voltage(&_ads);  // accumulates the voltage reading
-        count++;                             // increments the count variable
-        if (esp_timer_get_time() - start >=
-            TEMPO_ANALISE *
-                1e6)  // if it passed the time we set to receive data
-        {
-            volt =
-                volt / count;  // calculates the mean of the voltage accumulated
-            ads_ir.irrad = volt / (RF * (PD_AREA * 1e-6) *
-                                   PD_SENS);  // calculates the irradiance
-            xQueueOverwrite(
-                ads_queue,
-                &ads_ir);  // sends the data through the data transmission queue
-            volt = 0;      // resets the voltage variable
-            count = 0;     // and the count variable
-            start = esp_timer_get_time();  // and makes the initial time be the
-                                           // current time
+        volt += ads1115_get_voltage(&_ads);  // Accumulates the voltage reading
+        count++;                             // Increments the counter
+        // If the time for data gathering has passed
+        if (esp_timer_get_time() - start >= TEMPO_ANALISE * 1e6) {
+            // Measures the average voltage
+            volt = volt / count;
+            // Apply the irradiance formula
+            ads_ir.irrad = volt / (RF * (PD_AREA * 1e-6) * PD_SENS);
+            // Sends the gathered data through the queue.
+            xQueueOverwrite(ads_queue, &ads_ir);
+            volt = 0;   // Resets the voltage variable
+            count = 0;  // Resets the counter
+            // Assigns the current time to the initial time
+            start = esp_timer_get_time();
         }
-        vTaskDelay(2);  // small delay to avoid stack overflow, and give enough
-                        // time for the device to read the data
+        // Small delay to avoid stack overflow, and give enough time for the
+        // device to read the data
+        vTaskDelay(2);
     }
 }
 
