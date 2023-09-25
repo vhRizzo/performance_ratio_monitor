@@ -207,16 +207,16 @@ double ads1115_get_voltage(ads1115_t *ads) {
 /* Task to initialize and the device and loop for data gathering. Everything in
  * this task is new, so the "-N" identifier will be omitted. */
 void ads1115_task(void *pvParameters) {
-    ads1115_fsr_t _fsr = ADS1115_FSR_6_144;  // initializes the full-scale
-                                             // resolution to 6.144 volts
-    ads1115_mode_t _mode =
-        ADS1115_MODE_SINGLE;  // initializes the mode to single
-    ads1115_t _ads =
-        ads1115_config(I2C_PORT, ADS1115_ADDR);  // initializes the device
-    ads1115_set_pga(&_ads, _fsr);                // sets the fsr
-    ads1115_set_mode(&_ads, _mode);              // mode
-    ads1115_set_max_ticks(&_ads, 1000 / portTICK_PERIOD_MS);  // and max ticks
-    double volt = 0;  // initializes the voltage variable
+    // Initializes the FSR (full-scale resolution) as 6.144 volts
+    ads1115_fsr_t _fsr = ADS1115_FSR_6_144;
+    // Initializes the mode as "single"
+    ads1115_mode_t _mode = ADS1115_MODE_SINGLE;
+    // Initializes the device
+    ads1115_t _ads = ads1115_config(I2C_PORT, ADS1115_ADDR);
+    ads1115_set_pga(&_ads, _fsr);                             // Sets the FSR
+    ads1115_set_mode(&_ads, _mode);                           // Sets mode
+    ads1115_set_max_ticks(&_ads, 1000 / portTICK_PERIOD_MS);  // Sets max ticks
+    double volt = 0;  // Initializes voltage
     // Counter to measure average voltage
     uint16_t count = 0;
     /* Initializes a time control variable with the current clock time.
