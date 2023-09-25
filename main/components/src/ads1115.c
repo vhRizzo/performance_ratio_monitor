@@ -1,10 +1,6 @@
-#include "global_data.h"
-
-/* Wrapped the code with this condition for easy deactivation of the device when
- * not using it for debug purposes -N */
+#include "ads1115.h"
 #ifdef ADS1115_SENSOR
 
-#include "ads1115.h"
 // Struct to store the irradiance level -N
 ads_t ads_ir = {0};
 QueueHandle_t ads_queue;  // create a handler for the data transmission queue

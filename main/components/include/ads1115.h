@@ -1,19 +1,22 @@
 /* Fonte: https://github.com/Molorius/esp32-ads1115
  *
  * Adapted from Blake Felt's source code available at the link above. All
- * changes to source code are documented with the "-N" identifier at the end.
+ * changes to source code are documented with a "-N" identifier at the end.
  */
+
+#ifndef ADS1115_H
+#define ADS1115_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef ADS1115_H
-#define ADS1115_H
-
 // All libraries used throughout the project are included in this header file -N
 #include "global_data.h"
 
+/* Wrapped the code with this condition for easy deactivation of the device when
+ * not using it for debug purposes -N */
+#ifdef ADS1115_SENSOR
 #define ADS1115_ADDR 0x48  // Sets the address of the device -N
 
 /* Parameters of the analog input device (BPW34 photodiode connected to a
@@ -139,8 +142,8 @@ void ads1115_task(void *pvParameters);
 int16_t ads1115_get_raw(ads1115_t *ads);     // get signal in bits
 double ads1115_get_voltage(ads1115_t *ads);  // get signsl in volts
 
-#endif  // ifdef ADS1115_H
-
 #ifdef __cplusplus
 }
 #endif
+#endif /* ADS1115_SENSOR */
+#endif /* ADS1115_H */
