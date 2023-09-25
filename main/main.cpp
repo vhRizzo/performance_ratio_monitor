@@ -31,17 +31,17 @@ void app_main(void) {
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
-    // Sinaliza que um pino do ESP será utilizado (pino 2 e o pino padrao do LED
+    // Sinaliza que um pino do ESP será utilizado (pino 2 é o pino padrão do LED
     // do dev-kit ESP32S)
     esp_rom_gpio_pad_select_gpio(GPIO_NUM_2);
-    // Inicializa este como output
+    // Inicializa o pino como output
     gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
     gpio_set_level(GPIO_NUM_2, 0);  // Apaga o LED (define o sinal para baixo)
     vTaskDelay(1000 / portTICK_PERIOD_MS);  // Aguarda 1 segundo
     gpio_set_level(GPIO_NUM_2, 1);  // Acende o LED (define o sinal para alto)
     /* A função do LED é ser um controle de funcionamento. O LED deverá
      * permanecer aceso durante todo o funcionamento do dispositivo, se o LED
-     * estiver desligado ou piscando, é sinal de que há problemas no sistema. */
+     * estiver apagado ou piscando, é sinal de que há problemas no sistema. */
 
     // Interrompe o uso do WiFi (não será utilizado neste projeto)
     esp_wifi_stop();
