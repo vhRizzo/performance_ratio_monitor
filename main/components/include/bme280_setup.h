@@ -16,7 +16,7 @@
 #include "global_data.h"
 
 /* Wrapped the code with this condition for easy deactivation of the device when
- * not using it for debug purposes -N */
+ * not using it for debug purposes. -N */
 #ifdef BME280_SENSOR
 #include "bme280.h"
 
