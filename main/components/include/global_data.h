@@ -8,11 +8,12 @@ extern "C" {
 /* Geral */
 #define TEMPO_ANALISE 30  // Tempo entre cada leitura de dados, em segundos
 #define TEMPO_STARTUP 5   // Atraso até que o sistema inicie, em segundos
-// Frequência na qual será feita a leitura das coordenadas GPS (uma vez a cada
-// [CONTAGEM_GPS] leituras de [TEMPO_ANALISE]).
+/* Frequência na qual será feita a leitura das coordenadas GPS (uma vez a cada
+ * [CONTAGEM_GPS] leituras de [TEMPO_ANALISE]). */
 #define CONTAGEM_GPS 3
 
-/* Comentar/remover os defines irá desabilitar os respectivos processos */
+/* Remover os defines abaixo irá desabilitar seus respectivos processos */
+
 #define DSM501A_SENSOR
 #define BME280_SENSOR
 #define NEO6M_SENSOR
@@ -32,11 +33,20 @@ extern "C" {
 #define DS18B20_PIN GPIO_NUM_27  // D27
 
 /* Portas UART */
+
 #define NEO_UART_PORT UART_NUM_1
 #define LOR_UART_PORT UART_NUM_2
 
 /* Porta I2C */
 #define I2C_PORT I2C_NUM_0
+
+/* Portas para comunicação LoRaWAN */
+// Porta para envio dos dados ambientais
+#define PORTA_AMB 20
+// Porta para envio das coordenadas GPS
+#define PORTA_GPS 19
+// Porta para envio dos dados dos sensores relacionados ao módulo fotovoltaico
+#define PORTA_SOL 18
 
 #include <math.h>
 #include <stdint.h>
@@ -61,13 +71,34 @@ extern "C" {
 #include "soc/soc_caps.h"
 
 #if defined(BME280_SENSOR) || defined(ADS1115_SENSOR)
+/**
+ * @brief Inicializa o driver I2C.
+ *
+ * @return - ESP_OK: Sucesso.
+ * @return - ESP_ERR_INVALID_ARG: Erro de parâmetro na chamada do
+ * i2c_driver_install.
+ * @return - ESP_FAIL: Erro na instalação do driver.
+ */
 esp_err_t i2c_init();
 #endif
+/**
+ * @brief Tarefa que se mantém em um loop verificando por itens recebidos em uma
+ * das filas do projeto.
+ *
+ * @param pvParameters Não utilizado. Declarado apenas para manter o padrão de
+ * tarefas da FreeRTOS.
+ */
 void rcv_data_task(void *pvParameters);
+/**
+ * @brief Tarefa que formata e envia dados através do módulo LoRaWAN.
+ *
+ * @param pvParameters Não utilizado. Declarado apenas para manter o padrão de
+ * tarefas da FreeRTOS.
+ */
 void snd_data_task(void *pvParameters);
 
 #ifdef DSM501A_SENSOR
-// Struct/item com as variaveis necessarias para armazenar os dados de seu
+// Struct/item com as variáveis necessárias para armazenar os dados de seu
 // respectivo sensor
 typedef struct __attribute__((__packed__)) {
     float poeira_pm_10;
