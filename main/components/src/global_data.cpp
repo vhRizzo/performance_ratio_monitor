@@ -130,8 +130,8 @@ void snd_data_task(void *pvParameters) {
         // String temporária para formatar os dados
         char tmp[100];
         // Gera a string com os dados ambientais
-        sprintf(tmp, "%.2f,%.2f,%d;%.2f,%.2f", dados.temperatura, dados.umidade,
-                (int)dados.pressao, dados.poeira_pm_10, dados.poeira_pm_25);
+        sprintf(tmp, "%.2f,%.2f,%d", dados.temperatura, dados.umidade,
+                (int)dados.pressao);
         send_size = strlen(tmp);  // Armazena o tamanho da string
 #ifdef SERIAL_DEBUG
         ESP_LOGI(__func__, "ENVIOU = DADOS: %s | TAM: %i | PORTA: %d", tmp,
@@ -143,7 +143,8 @@ void snd_data_task(void *pvParameters) {
         ESP_LOGI(__func__, "RECEBEU = DADOS: %s | TAM: %i", rcv, (int)rcv_size);
 #endif
         // Gera a string com os dados do módulo fotovoltaico
-        sprintf(tmp, "%.2f,%.2f", dados.dallas_temp, dados.irrad);
+        sprintf(tmp, "%.2f,%.2f;%.2f;%.3f", dados.poeira_pm_10,
+                dados.poeira_pm_25, dados.dallas_temp, dados.irrad);
         send_size = strlen(tmp);  // Armazena o tamanho da string
 #ifdef SERIAL_DEBUG
         ESP_LOGI(__func__, "ENVIOU = DADOS: %s | TAM: %i | PORTA: %d", tmp,
