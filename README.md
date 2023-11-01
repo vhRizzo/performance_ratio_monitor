@@ -1,6 +1,6 @@
 # Performance Ratio Monitor
 
-Implementation of low-cost Performance Ratio (PR) monitor using various IoT sensors that sends data through a LoRaWAN radio module using ESP-IDF v5.0.
+Implementation of low-cost Performance Ratio (PR) monitor using various IoT sensors that sends data through a LoRaWAN radio module using ESP-IDF v5.1.1.
 It is intended to develop a product that will be attached to a photovoltaic module in order to estimate it's PR.
 
 ## Devices used:
