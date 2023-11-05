@@ -129,19 +129,6 @@ void snd_data_task(void *pvParameters) {
         vTaskDelay((TEMPO_ANALISE * 1000) / portTICK_PERIOD_MS);
         // String temporária para formatar os dados
         char tmp[100];
-        // Gera a string com os dados ambientais
-        sprintf(tmp, "%.2f,%.2f,%d", dados.temperatura, dados.umidade,
-                (int)dados.pressao);
-        send_size = strlen(tmp);  // Armazena o tamanho da string
-#ifdef SERIAL_DEBUG
-        ESP_LOGI(__func__, "ENVIOU = DADOS: %s | TAM: %i | PORTA: %d", tmp,
-                 (int)send_size, PORTA_AMB);
-#endif
-        // Envia os dados na porta de dados ambientais
-        teste.enviar_receber(PORTA_AMB, tmp, send_size, rcv, &rcv_size);
-#ifdef SERIAL_DEBUG
-        ESP_LOGI(__func__, "RECEBEU = DADOS: %s | TAM: %i", rcv, (int)rcv_size);
-#endif
         // Gera a string com os dados do módulo fotovoltaico
         sprintf(tmp, "%.2f,%.2f;%.2f;%.3f", dados.poeira_pm_10,
                 dados.poeira_pm_25, dados.dallas_temp, dados.irrad);
@@ -152,6 +139,19 @@ void snd_data_task(void *pvParameters) {
 #endif
         // Envia os dados na porta dos dados do piranômetro
         teste.enviar_receber(PORTA_SOL, tmp, send_size, rcv, &rcv_size);
+#ifdef SERIAL_DEBUG
+        ESP_LOGI(__func__, "RECEBEU = DADOS: %s | TAM: %i", rcv, (int)rcv_size);
+#endif
+        // Gera a string com os dados ambientais
+        sprintf(tmp, "%.2f,%.2f,%d", dados.temperatura, dados.umidade,
+                (int)dados.pressao);
+        send_size = strlen(tmp);  // Armazena o tamanho da string
+#ifdef SERIAL_DEBUG
+        ESP_LOGI(__func__, "ENVIOU = DADOS: %s | TAM: %i | PORTA: %d", tmp,
+                 (int)send_size, PORTA_AMB);
+#endif
+        // Envia os dados na porta de dados ambientais
+        teste.enviar_receber(PORTA_AMB, tmp, send_size, rcv, &rcv_size);
 #ifdef SERIAL_DEBUG
         ESP_LOGI(__func__, "RECEBEU = DADOS: %s | TAM: %i", rcv, (int)rcv_size);
 #endif

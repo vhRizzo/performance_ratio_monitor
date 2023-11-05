@@ -6,8 +6,8 @@ extern "C" {
 #endif /* C++ Guard */
 
 /* Geral */
-#define TEMPO_ANALISE 300  // Tempo entre cada leitura de dados, em segundos
-#define TEMPO_STARTUP 60   // Atraso até que o sistema inicie, em segundos
+#define TEMPO_ANALISE 30  // Tempo entre cada leitura de dados, em segundos
+#define TEMPO_STARTUP 5   // Atraso até que o sistema inicie, em segundos
 /* Frequência na qual será feita a leitura das coordenadas GPS (uma vez a cada
  * [CONTAGEM_GPS] leituras de [TEMPO_ANALISE]). */
 #define CONTAGEM_GPS 3
@@ -43,10 +43,10 @@ extern "C" {
 /* Portas para comunicação LoRaWAN */
 // Porta para envio dos dados ambientais
 #define PORTA_AMB 20
-// Porta para envio das coordenadas GPS
-#define PORTA_GPS 19
 // Porta para envio dos dados dos sensores relacionados ao módulo fotovoltaico
-#define PORTA_SOL 18
+#define PORTA_SOL 19
+// Porta para envio das coordenadas GPS
+#define PORTA_GPS 18
 
 #include <math.h>
 #include <stdint.h>
